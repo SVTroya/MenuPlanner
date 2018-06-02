@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="group_text_size">18sp</dimen>
+    <dimen name="item_text_size">18sp</dimen>
+    <dimen name="button_text_size">16sp</dimen>
+    <dimen name="list_top_margin">16dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_margin_main">8dp</dimen>
+    <dimen name="card_img_size">100dp</dimen>
+    <dimen name="card_img_margin">8dp</dimen>
+    <dimen name="recipe_name_text_size">16sp</dimen>
+    <dimen name="collapsingToolbarHeight">256dp</dimen>
+</resources>

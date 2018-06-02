@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/card_margin"
+        android:elevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/itemBackground"
+            android:descendantFocusability="blocksDescendants"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:id="@+id/imgRecipePhoto"
+                android:layout_width="@dimen/card_img_size"
+                android:layout_height="@dimen/card_img_size"
+                android:layout_margin="@dimen/card_img_margin"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/recipe_card_image"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txtRecipeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/imgRecipePhoto"
+                android:maxLines="2"
+                android:textColor="@color/itemText"
+                android:textSize="@dimen/recipe_name_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRecipeSource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ratingBar"
+                android:layout_alignStart="@+id/txtRecipeName"
+                android:layout_alignEnd="@+id/txtRecipeName"
+                android:layout_marginBottom="8dp"
+                android:maxLines="1"
+                android:textAllCaps="true"
+                android:textColor="@color/textSource"
+                android:textSize="@dimen/recipe_name_text_size"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/CustomRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txtRecipeName"
+                android:layout_alignBottom="@+id/imgRecipePhoto"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="2.5"
+                android:stepSize="0.5" />
+
+            <ImageView
+                android:id="@+id/imgOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/txtRecipeName"
+                android:layout_alignBottom="@+id/imgRecipePhoto"
+                android:tint="@color/textColor"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_more_vertical" />
+
+            <!--<com.cunoraz.tagview.TagView
+                android:id="@+id/tagView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_toEndOf="@+id/ratingBar"
+                android:layout_toStartOf="@+id/imgOptions"
+                android:layout_alignBottom="@+id/imgRecipePhoto"
+                android:layout_margin="8dp"
+                app:textPaddingLeft="16dp"
+                app:textPaddingRight="16dp" />-->
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

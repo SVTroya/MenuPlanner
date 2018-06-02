@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Base.Theme.AppCompat">
+    </style>
+
+    <style name="AppDefault" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorSecondary">@color/textColorLight</item>
+        <item name="android:textSize">@dimen/recipe_name_text_size</item>
+    </style>
+
+    <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar_layer</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">16dp</item>
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/backgroundDark</item>
+        <item name="android:textColorPrimary">@color/textColorLight</item>
+    </style>
+
+</resources>

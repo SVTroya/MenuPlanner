@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Menu Planner</string>
+
+    <!--  Hints  -->
+    <string name="new_recipe_name">New Recipe Name</string>
+
+    <!--  Buttons  -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="recalculate">Recalculate</string>
+
+    <!--  Labels  -->
+    <string name="amount">Amount</string>
+    <string name="comment">Comment</string>
+    <string name="result">Result</string>
+    <string name="unit">Unit</string>
+    <string name="recalc_for">for</string>
+    <string name="result_value">Result value</string>
+
+    <!--  Navigation Menu  -->
+    <string name="family_members_guests">Family members/Guests</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="items_manager">Items Manager</string>
+    <string name="menu_preferences">Preferences</string>
+
+    <string name="search">Search</string>
+    <string name="tab_item_details">Details</string>
+    <string name="tab_item_ingredients">Ingredients</string>
+
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="register">Register</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="login_header">Please login</string>
+    <string name="registration_header">Registration</string>
+
+    <!--  Errors  -->
+    <string name="unit_cant_be_selected_without_any_amount">Unit can\'t be selected without any amount!</string>
+    <string name="with_the_same_name_already_exists"> with the same name already exists</string>
+    <string name="recipe_name_cant_be_empty">Recipe name can\'t be empty!</string>
+    <string name="ingredient_cant_be_empty">Ingredient name can\'t be empty!</string>
+
+    <!--  Menu  -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="remove">Remove</string>
+    <string name="rename">Rename</string>
+
+    <!--  Home Screen  -->
+    <string name="plan_menu">Plan Menu</string>
+    <string name="cookbook">Cookbook</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="storage">Storage</string>
+    <string name="recipe_source">RECIPE SOURCE</string>
+    <string name="rename_recipe">Rename Recipe</string>
+    <string name="change_source">Change Source</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="delete_recipe">Delete Recipe</string>
+    <string name="save_changes">Save Changes</string>
+
+</resources>

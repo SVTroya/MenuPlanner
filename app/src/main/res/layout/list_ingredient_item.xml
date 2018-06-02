@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    tools:ignore="RtlSymmetry" >
+
+    <ImageView
+        android:id="@+id/imgIngredientPic"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/editIngredientName"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_carrot"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/editIngredientName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:paddingStart="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/itemText"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/editAmount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgIngredientPic" />
+
+    <TextView
+        android:id="@+id/editAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/itemText"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/editUnit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editIngredientName" />
+
+    <TextView
+        android:id="@+id/editUnit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/itemText"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/ibtnComment"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editAmount" />
+
+    <ImageButton
+        android:id="@+id/ibtnComment"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:background="@android:color/transparent"
+        android:focusable="false"
+        android:tint="@color/textColorDisabled"
+        app:layout_constraintEnd_toStartOf="@+id/ibtnMoreOptions"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editUnit"
+        app:srcCompat="@drawable/ic_comment_text_outline"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/ibtnMoreOptions"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@android:color/transparent"
+        android:focusable="false"
+        android:tint="@color/textColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ibtnComment"
+        app:srcCompat="@drawable/ic_more_vertical"
+        tools:ignore="ContentDescription" />
+
+</android.support.constraint.ConstraintLayout>
+
+
+<!--    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/itemBackground"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="horizontal"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:id="@+id/imgIngredientPic"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.15"
+                android:paddingStart="8dp"
+                android:paddingEnd="3dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_carrot"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/editIngredientName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:paddingBottom="10dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/itemText"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/editAmount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/itemText"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/editUnit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textAlignment="viewStart"
+                android:textColor="@color/itemText"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/editComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:paddingBottom="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/itemText"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/imgBtnDelete"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:focusable="false"
+                android:paddingEnd="8dp"
+                android:paddingStart="3dp"
+                app:srcCompat="@drawable/ic_delete"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSecondary"/>
+
+    </LinearLayout>-->

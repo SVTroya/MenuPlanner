@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_login"
+        android:title="@string/login"
+        android:icon="@drawable/ic_login" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_logout"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/menu_preferences"
+        android:title="@string/menu_preferences"
+        android:icon="@drawable/ic_settings_outline" />
+
+    <item
+        android:id="@+id/menu_items_manager"
+        android:title="@string/items_manager"
+        android:icon="@drawable/ic_clipboard" />
+
+    <item
+        android:id="@+id/menu_members"
+        android:title="@string/family_members_guests"
+        android:icon="@drawable/ic_account_multiple_outline" />
+
+</menu>

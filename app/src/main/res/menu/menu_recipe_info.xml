@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+   <!-- <item
+        android:id="@+id/menu_cancel"
+        android:title="@string/cancel"
+        android:icon="@drawable/ic_cancel_in_circle"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/menu_save"
+        android:title="@string/save_changes"
+        android:icon="@drawable/ic_confirm_in_circle"
+        app:showAsAction="always"/>-->
+
+    <item
+        android:id="@+id/menu_rename"
+        android:title="@string/rename_recipe" />
+
+    <item
+        android:id="@+id/menu_change_source"
+        android:title="@string/change_source" />
+
+    <item
+        android:id="@+id/menu_change_photo"
+        android:title="@string/change_photo" />
+
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/delete_recipe" />
+
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/share" />
+
+</menu>

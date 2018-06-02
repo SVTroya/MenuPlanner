@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#669900</color>
+    <color name="colorPrimaryDark">#558000</color>
+    <color name="colorPrimaryLight">#85c700</color>
+    <color name="colorSecondary">#424242</color>
+    <color name="colorAdditional">#ffffff</color>
+    <color name="colorAccent">@color/colorPrimaryDark</color>
+
+    <color name="selectedTabIndicator">#ffffff</color>
+
+    <!-- Background -->
+    <color name="background">#ffffff</color>
+    <color name="backgroundDark">#424242</color>
+    <color name="searchBkg">#ececec</color>
+    <color name="autoCompleteBkg">#cc424242</color>
+
+    <!-- Fonts -->
+    <color name="textColor">#434343</color>
+    <color name="textColorLight">#ffffff</color>
+    <color name="textColorDark">#3b3b3b</color>
+    <color name="textColorHint">#d4d4d4</color>
+    <color name="textColorDisabled">#adadad</color>
+    <color name="textColorCommentSet">#669900</color>
+
+    <!-- Lists -->
+    <color name="groupBackground">@color/colorPrimary</color>
+    <color name="groupBckgSelected">@color/colorPrimaryLight</color>
+    <color name="groupDivider">#ffffff</color>
+    <color name="groupText">@color/textColorLight</color>
+    <color name="itemBackground">@color/colorAdditional</color>
+    <color name="itemBckgSelected">#95df00</color>
+    <color name="itemDivider">#424242</color>
+    <color name="itemText">@color/textColorDark</color>
+    <color name="textSource">@color/colorPrimary</color>
+
+
+    <color name="colorTransparentWhite">#52FFFFFF</color>
+
+
+
+    <!-- Home Page -->
+    <color name="planMenuColor">#0baa02</color>
+    <color name="cookbookColor">#f95002</color>
+    <color name="shoppingListColor">#e10211</color>
+    <color name="storageColor">#0291e4</color>
+
+</resources>

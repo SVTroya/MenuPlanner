@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="15dp"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+<!--
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fabAddNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:fab_addButtonColorNormal="@color/colorPrimary"
+        app:fab_addButtonColorPressed="@color/colorPrimaryLight"
+        app:fab_addButtonPlusIconColor="@color/colorAdditional"
+        app:fab_expandDirection="up" />-->
+<!--
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:srcCompat="@drawable/ic_plus" />-->
+
+</android.support.design.widget.CoordinatorLayout>

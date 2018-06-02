@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_dialog">
+
+    <EditText
+        android:id="@+id/editItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_edit_text"
+        android:cursorVisible="true"
+        android:fontFamily="casual"
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/textColorDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="LabelFor" />
+
+    <AutoCompleteTextView
+        android:id="@+id/editGroupName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editItemName"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_edit_text"
+        android:cursorVisible="true"
+        android:fontFamily="casual"
+        android:inputType="textCapWords|textAutoComplete"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/textColorDark"
+        android:textColorHint="@color/textColorHint"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="LabelFor" />
+
+
+    <Button
+        android:id="@+id/btn_ok"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_cancel"
+        android:layout_marginBottom="5dp"
+        android:layout_toStartOf="@+id/btn_cancel"
+        android:text="@string/ok"
+        android:textColor="@color/textColorLight"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/editGroupName"
+        android:layout_marginBottom="5dp"
+        android:text="@string/cancel"
+        android:textColor="@color/textColorLight"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:paddingBottom="20dp"
+        tools:ignore="RtlSymmetry">
+
+        <EditText
+            android:id="@+id/editRecipeText"
+            android:layout_width="0dp"
+            android:layout_height="145dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shape_edit_text"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:padding="6dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/colorSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/labelResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="320dp"
+            android:background="@color/background"
+            android:labelFor="@+id/editResult"
+            android:paddingTop="5dp"
+            android:paddingBottom="3dp"
+            android:text="@string/result"
+            android:textColor="@color/textColorDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/editRecipeText"
+            app:layout_constraintTop_toBottomOf="@+id/editRecipeText" />
+
+        <EditText
+            android:id="@+id/editResult"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_edit_text_round"
+            android:gravity="center_horizontal"
+            android:hint="@string/result_value"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:padding="6dp"
+            android:textColor="@color/textColorDark"
+            android:textColorHint="@color/textColorHint"
+            app:layout_constraintStart_toStartOf="@+id/labelResult"
+            app:layout_constraintTop_toBottomOf="@+id/labelResult" />
+
+        <AutoCompleteTextView
+            android:id="@+id/editUnit"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shape_edit_text_round"
+            android:gravity="center_horizontal"
+            android:hint="@string/unit"
+            android:inputType="text"
+            android:lines="1"
+            android:padding="6dp"
+            android:textColor="@color/textColorDark"
+            android:textColorHint="@color/textColorHint"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editResult"
+            app:layout_constraintStart_toEndOf="@+id/editResult" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>
