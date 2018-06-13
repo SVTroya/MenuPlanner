@@ -27,6 +27,10 @@ public interface IngredientDao {
     @Insert(onConflict = REPLACE)
     long addItem(IngredientEntity ingredient);
 
+    //TODO: replace (needed for dummy data)
+    @Insert(onConflict = REPLACE)
+    List<Long> addItems(List<IngredientEntity> ingredient);
+
     @Delete
     void deleteItem(IngredientEntity ingredient);
 }

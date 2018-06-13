@@ -72,7 +72,7 @@ public class AddItemDialog extends Dialog {
 
                 if (!TextUtils.isEmpty(mItem.getItem().getName())) {
                     try {
-                        long newItemId = mItem.addItem();
+                        long newItemId = mItem.addItems();
                         mOnPositiveListener.OnPositive();
                         dismiss();
 

@@ -24,9 +24,9 @@ public interface RecipeAndCategoryDao {
     LiveData<List<CategoryEntity>> getCategoriesByRecipeId(int recipeId);
 
     @Insert
-    long addItem(RecipeAndCategoryEntity binding);
+    long addItems(RecipeAndCategoryEntity binding);
 
     //TODO: replace (needed for dummy data)
     @Insert
-    List<Long> addItem(List<RecipeAndCategoryEntity> bindings);
+    List<Long> addItems(List<RecipeAndCategoryEntity> bindings);
 }

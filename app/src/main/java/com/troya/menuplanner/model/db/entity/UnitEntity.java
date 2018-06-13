@@ -6,11 +6,9 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.troya.menuplanner.model.IUnit;
-
 @Entity(tableName = "units",
         indices = {@Index(value = "name", unique = true)})
-public class UnitEntity implements IUnit {
+public class UnitEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
@@ -19,7 +17,14 @@ public class UnitEntity implements IUnit {
     @NonNull
     private String name;
 
-    @Override
+    public UnitEntity() {
+    }
+
+    // TODO: remove
+    public UnitEntity(@NonNull String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
@@ -29,7 +34,6 @@ public class UnitEntity implements IUnit {
     }
 
     @NonNull
-    @Override
     public String getName() {
         return name;
     }

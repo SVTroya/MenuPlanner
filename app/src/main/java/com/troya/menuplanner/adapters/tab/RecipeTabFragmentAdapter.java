@@ -1,7 +1,6 @@
 package com.troya.menuplanner.adapters.tab;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -40,19 +39,8 @@ public class RecipeTabFragmentAdapter extends FragmentPagerAdapter {
     }
 
     private void initTabsMap(RecipeEntity recipe) {
-
-        Bundle ingredientsBundle = new Bundle();
-        Bundle detailsBundle = new Bundle();
-
-        ingredientsBundle.putLong("selectedRecipeId", recipe.getId());
-
-        if (recipe.getResultAmount() != null && recipe.getResultAmount() != 0) {
-            detailsBundle.putFloat("resultAmount", recipe.getResultAmount());
-            detailsBundle.putString("comment", recipe.getComment());
-        }
-
         tabs = new SparseArray<>();
-        tabs.put(0, IngredientsFragment.newInstance(context, ingredientsBundle));
-        tabs.put(1, DetailsFragment.newInstance(context, detailsBundle));
+        tabs.put(0, IngredientsFragment.newInstance(context, recipe));
+        tabs.put(1, DetailsFragment.newInstance(context, recipe));
     }
 }

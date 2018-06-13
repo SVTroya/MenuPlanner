@@ -16,7 +16,7 @@
     <string name="result">Result</string>
     <string name="unit">Unit</string>
     <string name="recalc_for">for</string>
-    <string name="result_value">Result value</string>
+    <string name="result_value">Result amount</string>
 
     <!--  Navigation Menu  -->
     <string name="family_members_guests">Family members/Guests</string>
@@ -61,5 +61,6 @@
     <string name="change_photo">Change Photo</string>
     <string name="delete_recipe">Delete Recipe</string>
     <string name="save_changes">Save Changes</string>
+    <string name="type_instructions_here">Type instructions here</string>
 
 </resources>

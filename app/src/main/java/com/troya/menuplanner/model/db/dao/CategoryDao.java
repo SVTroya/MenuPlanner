@@ -22,11 +22,11 @@ public interface CategoryDao {
     LiveData<CategoryEntity> getOneById(int id);
 
     @Insert(onConflict = REPLACE)
-    long addItem(CategoryEntity category);
+    long addItems(CategoryEntity category);
 
     //TODO: replace (needed for dummy data)
     @Insert(onConflict = REPLACE)
-    List<Long> addItem(List<CategoryEntity> categories);
+    List<Long> addItems(List<CategoryEntity> categories);
 
     @Delete
     void deleteItem(CategoryEntity category);

@@ -13,24 +13,6 @@
         android:paddingBottom="20dp"
         tools:ignore="RtlSymmetry">
 
-        <EditText
-            android:id="@+id/editRecipeText"
-            android:layout_width="0dp"
-            android:layout_height="145dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/shape_edit_text"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:padding="6dp"
-            android:scrollbars="vertical"
-            android:textColor="@color/colorSecondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="LabelFor" />
-
         <TextView
             android:id="@+id/labelResult"
             android:layout_width="0dp"
@@ -45,14 +27,14 @@
             android:textColor="@color/textColorDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/editRecipeText"
-            app:layout_constraintTop_toBottomOf="@+id/editRecipeText" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editResult"
             android:layout_width="120dp"
             android:layout_height="35dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/shape_edit_text_round"
+            android:background="@drawable/shape_edit_text"
             android:gravity="center_horizontal"
             android:hint="@string/result_value"
             android:inputType="numberDecimal"
@@ -68,7 +50,7 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/shape_edit_text_round"
+            android:background="@drawable/shape_edit_text"
             android:gravity="center_horizontal"
             android:hint="@string/unit"
             android:inputType="text"
@@ -78,6 +60,26 @@
             android:textColorHint="@color/textColorHint"
             app:layout_constraintBaseline_toBaselineOf="@+id/editResult"
             app:layout_constraintStart_toEndOf="@+id/editResult" />
+
+        <EditText
+            android:id="@+id/editRecipeText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="145dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shape_edit_text"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:padding="6dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/colorSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editResult"
+            android:hint="@string/type_instructions_here"
+            android:textColorHint="@color/textColorHint"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -21,8 +21,15 @@ public interface UnitDao {
     @Query("SELECT _id FROM units WHERE name = :name")
     int getIdByName(String name);
 
+    @Query("SELECT name FROM units WHERE _id = :id")
+    String getNameById(int id);
+
     @Insert(onConflict = REPLACE)
     long addItem(UnitEntity unit);
+
+    //TODO: replace (needed for dummy data)
+    @Insert(onConflict = REPLACE)
+    List<Long> addItems(List<UnitEntity> unit);
 
     @Delete
     void deleteItem(UnitEntity unit);

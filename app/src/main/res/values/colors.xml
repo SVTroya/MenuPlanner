@@ -20,8 +20,9 @@
     <color name="textColorLight">#ffffff</color>
     <color name="textColorDark">#3b3b3b</color>
     <color name="textColorHint">#d4d4d4</color>
-    <color name="textColorDisabled">#adadad</color>
+    <color name="textColorDisabled">#c2c2c2</color>
     <color name="textColorCommentSet">#669900</color>
+    <color name="textColorError">#c20a00</color>
 
     <!-- Lists -->
     <color name="groupBackground">@color/colorPrimary</color>
@@ -36,6 +37,8 @@
 
 
     <color name="colorTransparentWhite">#52FFFFFF</color>
+
+    <color name="colorTransparentDark">#52000000</color>
 
 
 

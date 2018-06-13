@@ -6,6 +6,8 @@ import android.arch.persistence.room.Room;
 
 import com.troya.menuplanner.model.db.AppDatabase;
 import com.troya.menuplanner.model.db.dao.CategoryDao;
+import com.troya.menuplanner.model.db.dao.IngredientDao;
+import com.troya.menuplanner.model.db.dao.IngredientInRecipeDao;
 import com.troya.menuplanner.model.db.dao.RecipeAndCategoryDao;
 import com.troya.menuplanner.model.db.dao.RecipeDao;
 import com.troya.menuplanner.model.db.dao.UnitDao;
@@ -63,9 +65,23 @@ public class RoomModule {
 
     @Provides
     @Singleton
+    IngredientDao provideIngredientDao(AppDatabase database) {
+        return database.ingredientDao();
+    }
+
+    @Provides
+    @Singleton
+    IngredientInRecipeDao provideIngredientInRecipeDao(AppDatabase database) {
+        return database.ingredientInRecipeDao();
+    }
+
+    @Provides
+    @Singleton
     Repository provideRepository(RecipeDao recipeDao, CategoryDao categoryDao,
-                                 RecipeAndCategoryDao recipeAndCategoryDao) {
-        return new Repository(recipeDao, categoryDao, recipeAndCategoryDao);
+                                 RecipeAndCategoryDao recipeAndCategoryDao, IngredientDao ingredientDao,
+                                 UnitDao unitDao, IngredientInRecipeDao ingredientInRecipeDao) {
+        return new Repository(recipeDao, categoryDao, recipeAndCategoryDao,
+                ingredientDao, unitDao, ingredientInRecipeDao);
     }
 
     @Provides

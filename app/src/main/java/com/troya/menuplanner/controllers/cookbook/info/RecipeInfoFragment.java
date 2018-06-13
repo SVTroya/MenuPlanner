@@ -28,11 +28,13 @@ import com.troya.menuplanner.R;
 import com.troya.menuplanner.adapters.tab.RecipeTabFragmentAdapter;
 import com.troya.menuplanner.helpers.ImageHelper;
 import com.troya.menuplanner.model.db.entity.RecipeEntity;
+import com.troya.menuplanner.model.views.IngredientInRecipeInfo;
 import com.troya.menuplanner.viewmodel.RecipeInfoViewModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,7 +44,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class RecipeInfoFragment extends Fragment {
-    private static final String TAG = RecipeInfoFragment.class.getSimpleName();
+    public static final String TAG = RecipeInfoFragment.class.getSimpleName();
     private static final int LAYOUT = R.layout.fragment_recipe_info;
     private static final int POPUP_MENU = R.menu.menu_recipe_info;
 
@@ -64,6 +66,7 @@ public class RecipeInfoFragment extends Fragment {
 
     private RecipeInfoViewModel mViewModel;
     private Unbinder mUnbinder;
+    private List<IngredientInRecipeInfo> mIngredientsInfo;
 
     @BindView(R.id.tbControls)
     Toolbar mToolbar;
@@ -77,8 +80,6 @@ public class RecipeInfoFragment extends Fragment {
     EditText mSourceView;
     @BindView(R.id.imgRecipePhoto)
     ImageView mImageView;
-
-
     @BindView(R.id.ibtnMore)
     ImageView mMoreOptionsButton;
 
@@ -104,8 +105,6 @@ public class RecipeInfoFragment extends Fragment {
         }
     }
 
-
-    // TODO: when recipe data changed ?????
     private void initTabLayout() {
         if (this.getActivity() != null) {
             RecipeTabFragmentAdapter adapter = new RecipeTabFragmentAdapter(this.getContext(),
@@ -131,7 +130,7 @@ public class RecipeInfoFragment extends Fragment {
     }
 
     private void showPopupMenu() {
-        if(this.getActivity() != null) {
+        if (this.getActivity() != null) {
             PopupMenu popup = new PopupMenu(this.getContext(), mMoreOptionsButton);
             popup.getMenuInflater().inflate(POPUP_MENU, popup.getMenu());
             popup.show();
@@ -163,8 +162,7 @@ public class RecipeInfoFragment extends Fragment {
                                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                                 mRecipe.setImage(outputStream.toByteArray());
-                            }
-                            else {
+                            } else {
                                 Log.i(TAG, "onActivityResult: no Uri");
                             }
                         } catch (FileNotFoundException e) {
@@ -176,11 +174,15 @@ public class RecipeInfoFragment extends Fragment {
         }
     }
 
+
     /*------------------------------- Lifecycle -------------------------------*/
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof RecipeInfoActivity) {
+            ((RecipeInfoActivity) context).setRecipeInfoFragmentTag(getTag());
+        }
     }
 
     @Override
@@ -229,8 +231,27 @@ public class RecipeInfoFragment extends Fragment {
         super.onDestroyView();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+
+    /*------------------------------- Callbacks -------------------------------*/
+
+    public void addIngredient(IngredientInRecipeInfo ingredient) {
+
+    }
+
+    public void setInstructions(String instructions) {
+        mRecipe.setComment(instructions);
+    }
+
+    public void setResultAmount(float resultAmount) {
+        mRecipe.setResultAmount(resultAmount);
+    }
+
+    public void setResultUnit(String unit) {
+        int unitId = mViewModel.getUnitIdByName(unit);
+        mRecipe.setResultUnitId((unitId != 0) ? unitId : null);
+    }
+
+    public void setIngredientsInfo(List<IngredientInRecipeInfo> ingredientsInfo) {
+        mIngredientsInfo = ingredientsInfo;
     }
 }

@@ -1,4 +1,4 @@
-package com.troya.menuplanner.model;
+package com.troya.menuplanner.model.views;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Ignore;
@@ -8,7 +8,7 @@ import com.troya.menuplanner.model.db.entity.RecipeAndCategoryEntity;
 
 import java.util.List;
 
-public class RecipeCardInfo implements IRecipeCardInfo {
+public class RecipeInfo {
 
     @ColumnInfo(name = "_id")
     private int id;
@@ -20,11 +20,11 @@ public class RecipeCardInfo implements IRecipeCardInfo {
     @Relation(projection = "category_id", parentColumn = "_id", entityColumn = "recipe_id", entity = RecipeAndCategoryEntity.class)
     private List<Integer> categoriesId;
 
-    public RecipeCardInfo() {
+    public RecipeInfo() {
     }
 
     @Ignore
-    public RecipeCardInfo(int id, String name, byte[] image, String source, int rating, List<Integer> categoriesId) {
+    public RecipeInfo(int id, String name, byte[] image, String source, int rating, List<Integer> categoriesId) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -33,7 +33,6 @@ public class RecipeCardInfo implements IRecipeCardInfo {
         this.categoriesId = categoriesId;
     }
 
-    @Override
     public int getId() {
         return id;
     }
@@ -42,7 +41,6 @@ public class RecipeCardInfo implements IRecipeCardInfo {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -51,7 +49,6 @@ public class RecipeCardInfo implements IRecipeCardInfo {
         this.name = name;
     }
 
-    @Override
     public byte[] getImage() {
         return image;
     }
@@ -60,7 +57,6 @@ public class RecipeCardInfo implements IRecipeCardInfo {
         this.image = image;
     }
 
-    @Override
     public String getSource() {
         return source;
     }
@@ -69,7 +65,6 @@ public class RecipeCardInfo implements IRecipeCardInfo {
         this.source = source;
     }
 
-    @Override
     public int getRating() {
         return rating;
     }
@@ -78,7 +73,6 @@ public class RecipeCardInfo implements IRecipeCardInfo {
         this.rating = rating;
     }
 
-    @Override
     public List<Integer> getCategoriesId() {
         return categoriesId;
     }

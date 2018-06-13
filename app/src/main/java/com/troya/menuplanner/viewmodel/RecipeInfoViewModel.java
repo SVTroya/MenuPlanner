@@ -25,4 +25,8 @@ public class RecipeInfoViewModel extends ViewModel {
     public void saveRecipeChanges(RecipeEntity recipe) {
         mExecutorService.execute(() -> mRepository.addRecipe(recipe));
     }
+
+    public int getUnitIdByName (String unitName) {
+        return mRepository.getUnitIdByName(unitName);
+    }
 }

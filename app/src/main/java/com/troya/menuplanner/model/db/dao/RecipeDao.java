@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
-import com.troya.menuplanner.model.RecipeCardInfo;
+import com.troya.menuplanner.model.views.RecipeInfo;
 import com.troya.menuplanner.model.db.entity.RecipeEntity;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface RecipeDao {
 
     @Transaction
     @Query("SELECT _id, name, source, image, rating FROM recipes")
-    LiveData<List<RecipeCardInfo>> getAllExt();
+    LiveData<List<RecipeInfo>> getAllExt();
 
     @Query("SELECT _id, name, image, result_amount, result_unit_id, comment, source, rating " +
             "FROM recipes " +
@@ -38,12 +38,12 @@ public interface RecipeDao {
     int updateItem(RecipeEntity recipe);
 
     @Insert(onConflict = REPLACE)
-    long addItem(RecipeEntity recipe);
+    long addItems(RecipeEntity recipe);
 
 
     //TODO: replace (needed for dummy data)
     @Insert(onConflict = REPLACE)
-    List<Long> addItem(List<RecipeEntity> recipes);
+    List<Long> addItems(List<RecipeEntity> recipes);
 
     @Delete
     void deleteItem(RecipeEntity recipe);

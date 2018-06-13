@@ -19,7 +19,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_carrot"
+        app:srcCompat="@drawable/carrot"
         tools:ignore="ContentDescription" />
 
     <TextView

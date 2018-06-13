@@ -73,14 +73,10 @@ public class RecipesListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecipesListView.setLayoutManager(layoutManager);
         mAdapter = new RecipesListAdapter(
-                this.getActivity(),
-                new RecipesListAdapter.Callback() {
-                    @Override
-                    public void onClick(long id) {
-                        Intent intent = new Intent(RecipesListFragment.this.getActivity(), RecipeInfoActivity.class);
-                        intent.putExtra(RecipeInfoActivity.KEY_RECIPE_ID, (int)id);
-                        startActivity(intent);
-                    }
+                id -> {
+                    Intent intent = new Intent(RecipesListFragment.this.getActivity(), RecipeInfoActivity.class);
+                    intent.putExtra(RecipeInfoActivity.KEY_RECIPE_ID, id);
+                    startActivity(intent);
                 });
         mRecipesListView.setAdapter(mAdapter);
 
@@ -124,7 +120,7 @@ public class RecipesListFragment extends Fragment {
 
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeListViewModel.class);
 
-       // mViewModel.insertDummyData();
+        // mViewModel.insertDummyData();
 
         initRecycler();
         mViewModel.getAllRecipes().observe(this, recipes -> mAdapter.setData(recipes));

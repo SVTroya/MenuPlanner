@@ -8,14 +8,12 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.troya.menuplanner.model.IIngredient;
-
 @Entity(tableName = "ingredients",
         foreignKeys = @ForeignKey(entity = IngredientGroupEntity.class,
                                   parentColumns = "_id",
                                   childColumns = "group_id"),
         indices = {@Index(value = "name", unique = true)})
-public class IngredientEntity implements IIngredient {
+public class IngredientEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
@@ -30,7 +28,15 @@ public class IngredientEntity implements IIngredient {
     @ColumnInfo(name = "image_source")
     private String imageSource;
 
-    @Override
+    public IngredientEntity() {
+    }
+
+    // TODO: remove
+    public IngredientEntity(@NonNull String name, String imageSource) {
+        this.name = name;
+        this.imageSource = imageSource;
+    }
+
     public int getId() {
         return id;
     }
@@ -40,7 +46,6 @@ public class IngredientEntity implements IIngredient {
     }
 
     @NonNull
-    @Override
     public String getName() {
         return name;
     }
@@ -49,7 +54,6 @@ public class IngredientEntity implements IIngredient {
         this.name = name;
     }
 
-    @Override
     public Integer getGroupId() {
         return groupId;
     }
@@ -58,7 +62,6 @@ public class IngredientEntity implements IIngredient {
         this.groupId = groupId;
     }
 
-    @Override
     public String getImageSource() {
         return imageSource;
     }

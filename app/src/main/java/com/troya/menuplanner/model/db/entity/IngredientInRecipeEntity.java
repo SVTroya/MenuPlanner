@@ -25,9 +25,21 @@ public class IngredientInRecipeEntity {
     private float amount;
 
     @ColumnInfo(name = "unit_id", index = true)
-    private Long unitId;
+    private Integer unitId;
 
     private String instructions;
+
+    public IngredientInRecipeEntity() {
+    }
+
+    // TODO: remove
+    public IngredientInRecipeEntity(int recipeId, int ingredientId, float amount, Integer unitId, String instructions) {
+        this.recipeId = recipeId;
+        this.ingredientId = ingredientId;
+        this.amount = amount;
+        this.unitId = unitId;
+        this.instructions = instructions;
+    }
 
     public int getId() {
         return id;
@@ -61,11 +73,11 @@ public class IngredientInRecipeEntity {
         this.amount = amount;
     }
 
-    public Long getUnitId() {
+    public Integer getUnitId() {
         return unitId;
     }
 
-    public void setUnitId(Long unitId) {
+    public void setUnitId(Integer unitId) {
         this.unitId = unitId;
     }
 

@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
 
-import com.troya.menuplanner.model.RecipeCardInfo;
+import com.troya.menuplanner.model.views.RecipeInfo;
 import com.troya.menuplanner.model.db.entity.CategoryEntity;
 import com.troya.menuplanner.model.db.entity.RecipeEntity;
 import com.troya.menuplanner.model.repositories.Repository;
@@ -26,7 +26,7 @@ public class RecipeListViewModel extends ViewModel {
         this.mExecutorService = Executors.newSingleThreadExecutor();
     }
 
-    public LiveData<List<RecipeCardInfo>> getAllRecipes() {
+    public LiveData<List<RecipeInfo>> getAllRecipes() {
         return mRepository.getAllRecipesExt();
     }
 
