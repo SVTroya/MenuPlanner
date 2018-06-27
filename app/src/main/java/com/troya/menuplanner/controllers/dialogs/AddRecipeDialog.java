@@ -76,7 +76,7 @@ public class AddRecipeDialog extends Dialog {
 
     /*------------------------------- Callbacks -------------------------------*/
 
-    @OnClick(R.id.btn_ok)
+    @OnClick(R.id.btn_cancel)
     void onOkClick() {
         mNameLayout.setError(null);
 
@@ -90,7 +90,7 @@ public class AddRecipeDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.btn_cancel)
+    @OnClick(R.id.btn_ok)
     void onCancelClick() {
         cancel();
     }

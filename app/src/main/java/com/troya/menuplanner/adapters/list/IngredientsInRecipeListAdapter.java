@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.troya.menuplanner.R;
@@ -24,18 +25,26 @@ import butterknife.ButterKnife;
 
 public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<IngredientsInRecipeListAdapter.ViewHolder> {
     private static final int LAYOUT = R.layout.list_ingredient_item;
+    private static final int MENU = R.menu.popup_ingr_in_rec_options;
 
     private List<IngredientInRecipeInfo> mData;
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private IngredientsListCallback mCallback;
 
-    public IngredientsInRecipeListAdapter(Context context) {
+    public IngredientsInRecipeListAdapter(Context context, IngredientsListCallback callback) {
         mContext = context;
+        mCallback = callback;
     }
 
     public void setData(List<IngredientInRecipeInfo> ingredients) {
         this.mData = ingredients;
         notifyDataSetChanged();
+    }
+
+    public void addData(IngredientInRecipeInfo ingredient) {
+        this.mData.add(ingredient);
+        notifyItemInserted(this.mData.size() - 1);
     }
 
     @Override
@@ -64,6 +73,26 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
             }
 
             TransitionManager.beginDelayedTransition(mRecyclerView);
+        });
+
+        holder.mMoreOptionsButton.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(mContext, view);
+            popup.getMenuInflater().inflate(MENU, popup.getMenu());
+            popup.show();
+
+            popup.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.menu_edit:
+                        break;
+
+                    case R.id.menu_delete:
+                        mCallback.onDelete(mData.get(position).getId());
+                        mData.remove(position);
+                        notifyItemRemoved(position);
+                        break;
+                }
+                return false;
+            });
         });
     }
 
@@ -121,12 +150,15 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
 
             if (!TextUtils.isEmpty(ingredient.getComment())) {
                 mCommentIndicator.setImageResource(R.drawable.ic_comment_outline_active);
-            }
-            else {
+            } else {
                 mCommentIndicator.setImageResource(R.drawable.ic_comment_outline_inactive);
             }
 
             mCommentView.setText(ingredient.getComment());
         }
+    }
+
+    public interface IngredientsListCallback {
+        void onDelete (int id);
     }
 }

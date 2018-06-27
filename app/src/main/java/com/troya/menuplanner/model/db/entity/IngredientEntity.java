@@ -31,6 +31,10 @@ public class IngredientEntity {
     public IngredientEntity() {
     }
 
+    public IngredientEntity(@NonNull String name) {
+        this.name = name;
+    }
+
     // TODO: remove
     public IngredientEntity(@NonNull String name, String imageSource) {
         this.name = name;

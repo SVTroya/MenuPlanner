@@ -23,16 +23,14 @@ import com.troya.menuplanner.model.db.entity.RecipeEntity;
 import com.troya.menuplanner.model.views.IngredientInRecipeInfo;
 import com.troya.menuplanner.viewmodel.IngredientsViewModel;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class IngredientsFragment extends BaseTabFragment implements IngredientInRecipeDialog.DialogCallback {
+public class IngredientsFragment extends BaseTabFragment
+        implements IngredientInRecipeDialog.DialogCallback, IngredientsInRecipeListAdapter.IngredientsListCallback {
     private static final int LAYOUT = R.layout.fragment_ingredients;
 
     @Inject
@@ -54,7 +52,6 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
     private Unbinder mUnbinder;
     private IngredientsViewModel mViewModel;
     private IngredientsInRecipeListAdapter mAdapter;
-    private List<IngredientInRecipeInfo> mIngredientsInfo;
 
     @BindView(R.id.listView)
     RecyclerView mIngredientsListView;
@@ -64,7 +61,7 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
     private void initRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mIngredientsListView.setLayoutManager(layoutManager);
-        mAdapter = new IngredientsInRecipeListAdapter(this.getContext());
+        mAdapter = new IngredientsInRecipeListAdapter(this.getContext(), this);
         mIngredientsListView.setAdapter(mAdapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(
@@ -76,21 +73,11 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
         mIngredientsListView.addItemDecoration(itemDecoration);
     }
 
-    @OnClick(R.id.fabAddNew)
-    void onAddNewClick() {
-        if (this.getContext() != null) {
-            new IngredientInRecipeDialog(this.getContext(), null, this).show();
-        }
-    }
-
-
     public void setDefaultUnit(String unit) {
         mUnitView.setText(unit);
     }
 
-
     /*------------------------------- Lifecycle -------------------------------*/
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -101,8 +88,7 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
 
         try {
             mCallback = (RecipeInfoTabsCallback) context;
-        }
-        catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement " +
                     RecipeInfoTabsCallback.class.getSimpleName());
         }
@@ -119,10 +105,6 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
 
         View view = inflater.inflate(LAYOUT, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-
-        if (mRecipe.getResultUnitId() != null) {
-            mUnitView.setText(mViewModel.getUnitNameById(mRecipe.getResultUnitId()));
-        }
 
         initRecyclerView();
 
@@ -142,7 +124,13 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
                     .get(IngredientsViewModel.class);
         }
 
-        mViewModel.getIngredientsById(mRecipe.getId()).observe(this, ingredients -> mAdapter.setData(ingredients));
+        mViewModel.getIngredientsById(mRecipe.getId()).observe(this, ingredients -> {
+            mAdapter.setData(ingredients);
+        });
+
+        if (mRecipe.getResultUnitId() != null) {
+            mUnitView.setText(mViewModel.getUnitNameById(mRecipe.getResultUnitId()));
+        }
     }
 
     @Override
@@ -152,28 +140,31 @@ public class IngredientsFragment extends BaseTabFragment implements IngredientIn
     }
 
 
-
     /*------------------------------- Callbacks -------------------------------*/
-
     @Override
     public void onVerifiedDismiss(IngredientInRecipeInfo ingredient) {
+        mAdapter.addData(ingredient);
+        mCallback.addIngredientInfo(ingredient);
+    }
 
+    @Override
+    public String[] getAllIngredients() {
+        return new String[0];
+    }
 
-/*
-    this.mIngredientInRecipeEntity = new IngredientInRecipeEntity();
-        if (ingredient != null) {
-            this.mIngredientInRecipeEntity.setId(ingredient.getId());
+    @Override
+    public String[] getAllUnits() {
+        return new String[0];
+    }
 
-    IngredientRepo ingredientRepo = new IngredientRepo(
-            this.getContext(),
-            new IngredientEntity(mIngredientNameView.getText().toString()),
-            null);
-    long ingredientId = ingredientRepo.getOrCreateIngredientId();
-    @Nullable
-    Long unitId = (mUnitView.getText().toString().isEmpty()) ? null
-            : new UnitRepo(this.getContext(), new UnitEntity(mUnitView.getText().toString())).getOrCreateUnitId();
+    public void onAddIngredientClick() {
+        if (this.getContext() != null) {
+            new IngredientInRecipeDialog(this.getContext(), null, this, mViewModel).show();
+        }
+    }
 
-                mRecipeIngredient.setRecipeId(mRecipe);
-                mRecipeIngredient.setIngredientId(ingredientId);*/
+    @Override
+    public void onDelete(int id) {
+        mCallback.onIngredientDelete(id);
     }
 }

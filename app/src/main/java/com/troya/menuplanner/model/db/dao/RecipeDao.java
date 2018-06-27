@@ -38,7 +38,7 @@ public interface RecipeDao {
     int updateItem(RecipeEntity recipe);
 
     @Insert(onConflict = REPLACE)
-    long addItems(RecipeEntity recipe);
+    long addItem(RecipeEntity recipe);
 
 
     //TODO: replace (needed for dummy data)

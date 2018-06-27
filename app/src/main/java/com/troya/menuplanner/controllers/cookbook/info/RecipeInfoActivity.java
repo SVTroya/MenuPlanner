@@ -8,8 +8,6 @@ import com.troya.menuplanner.controllers.BaseActivity;
 import com.troya.menuplanner.helpers.RecipeInfoTabsCallback;
 import com.troya.menuplanner.model.views.IngredientInRecipeInfo;
 
-import java.util.List;
-
 public class RecipeInfoActivity extends BaseActivity implements RecipeInfoTabsCallback {
 
     public static final int LAYOUT = R.layout.activity_recipe_info;
@@ -51,12 +49,21 @@ public class RecipeInfoActivity extends BaseActivity implements RecipeInfoTabsCa
         }
     }
 
+    private DetailsFragment getDetailsFragment() {
+        try {
+            return (DetailsFragment) mFragmentManager.findFragmentByTag(mDetailsFragmentTag);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     /*------------------------------- Lifecycle -------------------------------*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+
 
         int recipeId = getIntent().getIntExtra(KEY_RECIPE_ID, 0);
         mFragmentManager = getSupportFragmentManager();
@@ -67,10 +74,10 @@ public class RecipeInfoActivity extends BaseActivity implements RecipeInfoTabsCa
     /*------------------------------- Callbacks -------------------------------*/
 
     @Override
-    public void addIngredient(IngredientInRecipeInfo ingredient) {
+    public void addIngredientInfo(IngredientInRecipeInfo ingredient) {
         RecipeInfoFragment recipeInfoFragment = getRecipeInfoFragment();
         if (recipeInfoFragment != null) {
-            recipeInfoFragment.addIngredient(ingredient);
+            recipeInfoFragment.addIngredientInfo(ingredient);
         }
     }
 
@@ -91,24 +98,42 @@ public class RecipeInfoActivity extends BaseActivity implements RecipeInfoTabsCa
     }
 
     @Override
-    public void setResultUnit(String unit) {
+    public void setResultUnit(String unitName) {
         IngredientsFragment ingredientsFragment = getIngredientsFragment();
         RecipeInfoFragment recipeInfoFragment = getRecipeInfoFragment();
 
         if (ingredientsFragment != null) {
-            ingredientsFragment.setDefaultUnit(unit);
+            ingredientsFragment.setDefaultUnit(unitName);
         }
 
         if (recipeInfoFragment != null) {
-            recipeInfoFragment.setResultUnit(unit);
+            recipeInfoFragment.changeResultUnit();
         }
     }
 
     @Override
-    public void setIngredientsInfo(List<IngredientInRecipeInfo> ingredientsInfo) {
+    public String getResultUnitName() {
+        DetailsFragment detailsFragment = getDetailsFragment();
+        if (detailsFragment != null) {
+            return  detailsFragment.mUnitView.getText().toString();
+        }
+        return null;
+    }
+
+    @Override
+    public void onAddIngredientClick() {
+        IngredientsFragment ingredientsFragment = getIngredientsFragment();
+        if (ingredientsFragment != null) {
+            ingredientsFragment.onAddIngredientClick();
+        }
+    }
+
+    @Override
+    public void onIngredientDelete(int id) {
         RecipeInfoFragment recipeInfoFragment = getRecipeInfoFragment();
+
         if (recipeInfoFragment != null) {
-            recipeInfoFragment.setIngredientsInfo(ingredientsInfo);
+            recipeInfoFragment.onIngredientDelete(id);
         }
     }
 }

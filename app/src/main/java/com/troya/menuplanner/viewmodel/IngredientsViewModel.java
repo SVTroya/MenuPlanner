@@ -7,16 +7,12 @@ import com.troya.menuplanner.model.repositories.Repository;
 import com.troya.menuplanner.model.views.IngredientInRecipeInfo;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class IngredientsViewModel extends ViewModel {
     private Repository mRepository;
-    private ExecutorService mExecutorService;
 
     public IngredientsViewModel(Repository repository) {
         mRepository = repository;
-        mExecutorService = Executors.newSingleThreadExecutor();
     }
 
     public LiveData<List<IngredientInRecipeInfo>> getIngredientsById(int recipeId) {
@@ -25,5 +21,13 @@ public class IngredientsViewModel extends ViewModel {
 
     public String getUnitNameById(int unitId) {
         return mRepository.getUnitNameById(unitId);
+    }
+
+    public List<String> getAllIngredientNames() {
+        return mRepository.getAllIngredientNames();
+    }
+
+    public List<String> getAllUnitNames() {
+        return mRepository.getAllUnitNames();
     }
 }

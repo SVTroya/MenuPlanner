@@ -18,6 +18,9 @@ public interface UnitDao {
     @Query("SELECT * FROM units")
     LiveData<List<UnitEntity>> getAll();
 
+    @Query("SELECT name FROM units")
+    List<String> getAllNames();
+
     @Query("SELECT _id FROM units WHERE name = :name")
     int getIdByName(String name);
 

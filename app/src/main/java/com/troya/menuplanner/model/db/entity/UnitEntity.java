@@ -20,7 +20,6 @@ public class UnitEntity {
     public UnitEntity() {
     }
 
-    // TODO: remove
     public UnitEntity(@NonNull String name) {
         this.name = name;
     }

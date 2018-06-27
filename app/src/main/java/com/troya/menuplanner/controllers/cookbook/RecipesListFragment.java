@@ -80,7 +80,6 @@ public class RecipesListFragment extends Fragment {
                 });
         mRecipesListView.setAdapter(mAdapter);
 
-
         DividerItemDecoration itemDecoration = new DividerItemDecoration(
                 mRecipesListView.getContext(),
                 layoutManager.getOrientation());

@@ -10,12 +10,14 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import com.troya.menuplanner.App;
 import com.troya.menuplanner.R;
 import com.troya.menuplanner.adapters.tab.RecipeTabFragmentAdapter;
 import com.troya.menuplanner.helpers.ImageHelper;
+import com.troya.menuplanner.helpers.RecipeInfoTabsCallback;
+import com.troya.menuplanner.model.db.entity.IngredientInRecipeEntity;
 import com.troya.menuplanner.model.db.entity.RecipeEntity;
 import com.troya.menuplanner.model.views.IngredientInRecipeInfo;
 import com.troya.menuplanner.viewmodel.RecipeInfoViewModel;
@@ -34,6 +38,7 @@ import com.troya.menuplanner.viewmodel.RecipeInfoViewModel;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,6 +60,7 @@ public class RecipeInfoFragment extends Fragment {
     ViewModelProvider.Factory mViewModelFactory;
     private int mRecipeId;
     private RecipeEntity mRecipe;
+    private RecipeInfoTabsCallback mCallback;
 
     public static RecipeInfoFragment newInstance(int recipeId) {
         RecipeInfoFragment fragment = new RecipeInfoFragment();
@@ -66,9 +72,13 @@ public class RecipeInfoFragment extends Fragment {
 
     private RecipeInfoViewModel mViewModel;
     private Unbinder mUnbinder;
-    private List<IngredientInRecipeInfo> mIngredientsInfo;
+    private List<IngredientInRecipeInfo> mIngredientsToSaveInfo;
+    private List<Integer> mDeletedIngredientsIds;
+    SparseArray<String> mNewIngredientsData = null;
+    SparseArray<String> mNewUnitsData = null;
+    private boolean mIsRecipeInfoChanged = false;
 
-    @BindView(R.id.tbControls)
+    @BindView(R.id.tbActionBar)
     Toolbar mToolbar;
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
@@ -82,6 +92,9 @@ public class RecipeInfoFragment extends Fragment {
     ImageView mImageView;
     @BindView(R.id.ibtnMore)
     ImageView mMoreOptionsButton;
+
+    @BindView(R.id.fabAddNew)
+    FloatingActionButton mAddIngredientButton;
 
     private void setToolbarData() {
         if (this.getActivity() != null) {
@@ -111,22 +124,32 @@ public class RecipeInfoFragment extends Fragment {
                     this.getActivity().getSupportFragmentManager(), mRecipe);
             mViewPager.setAdapter(adapter);
             mTabLayout.setupWithViewPager(mViewPager);
+
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    switch (position) {
+                        case 0:
+                            mAddIngredientButton.show();
+                            break;
+
+                        default:
+                            mAddIngredientButton.hide();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
-    }
-
-    @OnClick(R.id.ibtnMore)
-    void onMoreOptionsClick() {
-        showPopupMenu();
-    }
-
-    @OnClick(R.id.ibtnConfirm)
-    void onConfirmClick() {
-        mViewModel.saveRecipeChanges(mRecipe);
-    }
-
-    @OnClick(R.id.ibtnCancel)
-    void onCancelClick() {
-
     }
 
     private void showPopupMenu() {
@@ -148,29 +171,55 @@ public class RecipeInfoFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_IMAGE_SELECT:
-                    if (this.getContext() != null) {
-                        try {
-                            if (data.getData() != null) {
-                                InputStream inputStream = this.getContext().getContentResolver().openInputStream(data.getData());
-                                final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                mImageView.setImageBitmap(bitmap);
-                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                                mRecipe.setImage(outputStream.toByteArray());
-                            } else {
-                                Log.i(TAG, "onActivityResult: no Uri");
-                            }
-                        } catch (FileNotFoundException e) {
-                            Log.i(TAG, "onActivityResult: " + e.getMessage());
-                        }
+    private List<IngredientInRecipeEntity> prepareIngredientsData() {
+        if (mIngredientsToSaveInfo != null) {
+            List<IngredientInRecipeEntity> ingredientsInRecipeForDb = new ArrayList<>();
+
+
+            for (int i = 0; i < mIngredientsToSaveInfo.size(); i++) {
+                IngredientInRecipeInfo ingredient = mIngredientsToSaveInfo.get(i);
+                IngredientInRecipeEntity ingrInRecEntity = new IngredientInRecipeEntity();
+
+                if (ingredient.getId() != null) {
+                    ingrInRecEntity.setId(ingredient.getId());
+                }
+                ingrInRecEntity.setRecipeId(mRecipeId);
+                ingrInRecEntity.setAmount(ingredient.getAmount() != null ? ingredient.getAmount() : 0);
+                ingrInRecEntity.setInstructions(ingredient.getComment());
+
+                if (ingredient.getIngredientId() != null) {
+                    ingrInRecEntity.setIngredientId(ingredient.getIngredientId());
+                } else {
+                    if (mNewIngredientsData == null) {
+                        mNewIngredientsData = new SparseArray<>();
                     }
-                    break;
+                    mNewIngredientsData.append(i, ingredient.getIngredientName());
+                }
+
+                if (ingredient.getUnitId() != null) {
+                    ingrInRecEntity.setUnitId(ingredient.getUnitId());
+                } else if (!TextUtils.isEmpty(ingredient.getUnitName())) {
+                    if (mNewUnitsData == null) {
+                        mNewUnitsData = new SparseArray<>();
+                    }
+                    mNewUnitsData.append(i, ingredient.getUnitName());
+                }
+
+                ingredientsInRecipeForDb.add(ingrInRecEntity);
             }
+
+            return ingredientsInRecipeForDb;
+        } else {
+            return null;
+        }
+    }
+
+    private void prepareRecipeData() {
+        String resultUnitName = mCallback.getResultUnitName();
+        if (!TextUtils.isEmpty(resultUnitName) && mRecipe.getResultUnitId() == null) {
+            SparseArray<String> unit = new SparseArray<>();
+            unit.append(0, resultUnitName);
+            mRecipe.setResultUnitId(mViewModel.getOrCreateUnitIds(unit).valueAt(0));
         }
     }
 
@@ -182,6 +231,13 @@ public class RecipeInfoFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof RecipeInfoActivity) {
             ((RecipeInfoActivity) context).setRecipeInfoFragmentTag(getTag());
+        }
+
+        try {
+            mCallback = (RecipeInfoTabsCallback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement " +
+                    RecipeInfoTabsCallback.class.getSimpleName());
         }
     }
 
@@ -234,24 +290,94 @@ public class RecipeInfoFragment extends Fragment {
 
     /*------------------------------- Callbacks -------------------------------*/
 
-    public void addIngredient(IngredientInRecipeInfo ingredient) {
+    @OnClick(R.id.ibtnMore)
+    void onMoreOptionsClick() {
+        showPopupMenu();
+    }
 
+    @OnClick(R.id.ibtnConfirm)
+    void onConfirmClick() {
+        RecipeEntity recipe = null;
+
+        if (mIsRecipeInfoChanged) {
+            prepareRecipeData();
+            recipe = mRecipe;
+        }
+
+        mViewModel.saveRecipeChanges(recipe, mDeletedIngredientsIds, prepareIngredientsData(),
+                mNewIngredientsData, mNewUnitsData);
+        mIsRecipeInfoChanged = false;
+        mIngredientsToSaveInfo = null;
+        mDeletedIngredientsIds = null;
+        mNewIngredientsData = null;
+        mNewUnitsData = null;
+    }
+
+    @OnClick(R.id.ibtnCancel)
+    void onCancelClick() {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_IMAGE_SELECT:
+                    if (this.getContext() != null) {
+                        try {
+                            if (data.getData() != null) {
+                                InputStream inputStream = this.getContext().getContentResolver().openInputStream(data.getData());
+                                final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                mImageView.setImageBitmap(bitmap);
+                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                                mRecipe.setImage(outputStream.toByteArray());
+                                mIsRecipeInfoChanged = true;
+                            } else {
+                                Log.i(TAG, "onActivityResult: no Uri");
+                            }
+                        } catch (FileNotFoundException e) {
+                            Log.i(TAG, "onActivityResult: " + e.getMessage());
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    public void addIngredientInfo(IngredientInRecipeInfo ingredient) {
+
+        if (mIngredientsToSaveInfo == null) {
+            mIngredientsToSaveInfo = new ArrayList<>();
+        }
+        mIngredientsToSaveInfo.add(ingredient);
     }
 
     public void setInstructions(String instructions) {
         mRecipe.setComment(instructions);
+        mIsRecipeInfoChanged = true;
     }
 
     public void setResultAmount(float resultAmount) {
         mRecipe.setResultAmount(resultAmount);
+        mIsRecipeInfoChanged = true;
     }
 
-    public void setResultUnit(String unit) {
-        int unitId = mViewModel.getUnitIdByName(unit);
-        mRecipe.setResultUnitId((unitId != 0) ? unitId : null);
+    public void changeResultUnit() {
+        mRecipe.setResultUnitId(null);
+        mIsRecipeInfoChanged = true;
     }
 
-    public void setIngredientsInfo(List<IngredientInRecipeInfo> ingredientsInfo) {
-        mIngredientsInfo = ingredientsInfo;
+    @OnClick(R.id.fabAddNew)
+    void onAddIngredientClick() {
+        mCallback.onAddIngredientClick();
+    }
+
+    public void onIngredientDelete(int id) {
+        if (mDeletedIngredientsIds == null) {
+            mDeletedIngredientsIds = new ArrayList<>();
+        }
+
+        mDeletedIngredientsIds.add(id);
     }
 }

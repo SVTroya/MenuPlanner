@@ -7,15 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.troya.menuplanner.R;
+import com.troya.menuplanner.helpers.FloatStringHelper;
 import com.troya.menuplanner.model.views.IngredientInRecipeInfo;
-
-import java.util.Locale;
+import com.troya.menuplanner.viewmodel.IngredientsViewModel;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class IngredientInRecipeDialog extends Dialog {
@@ -26,12 +28,15 @@ public class IngredientInRecipeDialog extends Dialog {
     private static final int ERROR_MESSAGE_2 = R.string.unit_cant_be_selected_without_any_amount;
 
     private DialogCallback mCallback;
+    private IngredientsViewModel mViewModel;
 
-    public IngredientInRecipeDialog(@NonNull Context context, IngredientInRecipeInfo ingredient, DialogCallback callback) {
+    public IngredientInRecipeDialog(@NonNull Context context, IngredientInRecipeInfo ingredient,
+                                    DialogCallback callback, IngredientsViewModel viewModel) {
         super(context);
 
         this.mIngredient = (ingredient == null) ? new IngredientInRecipeInfo() : ingredient;
         this.mCallback = callback;
+        this.mViewModel = viewModel;
     }
 
     @BindView(R.id.tilAmount)
@@ -46,7 +51,6 @@ public class IngredientInRecipeDialog extends Dialog {
     TextInputLayout mUnitTil;
     @BindView(R.id.editUnit)
     AutoCompleteTextView mUnitView;
-
     @BindView(R.id.editComment)
     EditText mCommentView;
 
@@ -54,6 +58,10 @@ public class IngredientInRecipeDialog extends Dialog {
 
     public interface DialogCallback {
         void onVerifiedDismiss(IngredientInRecipeInfo ingredient);
+
+        String[] getAllIngredients();
+
+        String[] getAllUnits();
     }
 
     @OnClick(R.id.btn_ok)
@@ -94,7 +102,6 @@ public class IngredientInRecipeDialog extends Dialog {
         return result;
     }
 
-
     /*------------------------------- Lifecycle -------------------------------*/
 
     @Override
@@ -103,26 +110,19 @@ public class IngredientInRecipeDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(LAYOUT);
 
-       /* ArrayAdapter<String> autoIngredient = new ArrayAdapter<>(this.getContext(),
-                LAYOUT_HINT_ITEM, IngredientRepo.getAllNames(this.getContext()));
+        ButterKnife.bind(this);
+
+        ArrayAdapter<String> autoIngredient = new ArrayAdapter<>(this.getContext(),
+                LAYOUT_HINT_ITEM, mViewModel.getAllIngredientNames());
         mIngredientNameView.setAdapter(autoIngredient);
         mIngredientNameView.setThreshold(1);
 
         ArrayAdapter<String> autoUnit = new ArrayAdapter<>(this.getContext(),
-                LAYOUT_HINT_ITEM, UnitRepo.getAllNames(this.getContext()));
+                LAYOUT_HINT_ITEM, mViewModel.getAllUnitNames());
         mUnitView.setAdapter(autoUnit);
-        mUnitView.setThreshold(1);*/
+        mUnitView.setThreshold(1);
 
-        String correctedAmount = null;
-        if (mIngredient.getAmount() != 0) {
-            if (mIngredient.getAmount() % 1 == 0) {
-                correctedAmount = String.format(Locale.getDefault(), "%d", (long)mIngredient.getAmount().floatValue());
-            } else {
-                correctedAmount = String.format(Locale.getDefault(), "%s", mIngredient.getAmount());
-            }
-        }
-
-        mAmountView.setText(correctedAmount);
+        mAmountView.setText(FloatStringHelper.getCorrectedValue(mIngredient.getAmount()));
         mIngredientNameView.setText(mIngredient.getIngredientName());
         mUnitView.setText(mIngredient.getUnitName());
         mCommentView.setText(mIngredient.getComment());

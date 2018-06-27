@@ -18,11 +18,17 @@ public interface IngredientDao {
     @Query("SELECT * FROM ingredients")
     LiveData<List<IngredientEntity>> getAll();
 
+    @Query("SELECT name FROM ingredients")
+    List<String> getAllNames();
+
     @Query("SELECT _id FROM ingredients WHERE group_id = :groupId")
     LiveData<List<Long>> getIngredientsIdByGroupId(Integer groupId);
 
     @Query("SELECT * FROM ingredients WHERE _id = :id")
     LiveData<IngredientEntity> getOneById(int id);
+
+    @Query("SELECT _id FROM ingredients WHERE name = :name")
+    int getIdByName(String name);
 
     @Insert(onConflict = REPLACE)
     long addItem(IngredientEntity ingredient);
