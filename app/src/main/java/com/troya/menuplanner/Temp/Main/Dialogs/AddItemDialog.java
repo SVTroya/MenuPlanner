@@ -22,7 +22,7 @@ public class AddItemDialog extends Dialog {
     protected Button mBtnClose;
     protected EditText mEditItemName;
 
-    public AddRecipeDialog(Context context, ItemRepo item, OnPositiveListener onPositiveListener) {
+    public SetNameDialog(Context context, ItemRepo item, OnPositiveListener onPositiveListener) {
         super(context);
         mOnPositiveListener = onPositiveListener;
         mItem = item;
@@ -65,8 +65,8 @@ public class AddItemDialog extends Dialog {
                     mItem.createNewItem(getEditItemName().getText().toString());
                 }
 
-                if (mItem instanceof GroupedItemRepo && AddRecipeDialog.this instanceof AddItemWithGroupDialog) {
-                    String groupName = ((AddItemWithGroupDialog) AddRecipeDialog.this).getEditGroupName().getText().toString();
+                if (mItem instanceof GroupedItemRepo && SetNameDialog.this instanceof AddItemWithGroupDialog) {
+                    String groupName = ((AddItemWithGroupDialog) SetNameDialog.this).getEditGroupName().getText().toString();
                     ((GroupedItemRepo) mItem).setGroupName(groupName);
                 }
 

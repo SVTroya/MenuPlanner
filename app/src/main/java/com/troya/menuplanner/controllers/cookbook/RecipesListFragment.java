@@ -3,7 +3,6 @@ package com.troya.menuplanner.controllers.cookbook;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,7 +23,7 @@ import com.troya.menuplanner.App;
 import com.troya.menuplanner.R;
 import com.troya.menuplanner.adapters.list.RecipesListAdapter;
 import com.troya.menuplanner.controllers.cookbook.info.RecipeInfoActivity;
-import com.troya.menuplanner.controllers.dialogs.AddRecipeDialog;
+import com.troya.menuplanner.controllers.dialogs.SetNameDialog;
 import com.troya.menuplanner.model.db.entity.CategoryEntity;
 import com.troya.menuplanner.model.db.entity.RecipeEntity;
 import com.troya.menuplanner.viewmodel.RecipeListViewModel;
@@ -137,28 +136,26 @@ public class RecipesListFragment extends Fragment {
     @OnClick(R.id.fabAddNew)
     void onAddNewClick() {
         if (this.getActivity() != null) {
-            AddRecipeDialog dialog = new AddRecipeDialog(this.getActivity(), new AddRecipeDialog.OnPositiveListener() {
-                @Override
-                public String onPositive(String text) {
-                    if (TextUtils.isEmpty(text)) {
-                        return getString(R.string.recipe_name_cant_be_empty);
-                    } else {
-                        return null;
-                    }
-                }
-            });
+            SetNameDialog setNameDialog = new SetNameDialog(
+                    this.getActivity(),
+                    null,
+                    R.string.new_recipe_name,
+                    text -> {
+                        if (TextUtils.isEmpty(text)) {
+                            return getString(R.string.recipe_name_cant_be_empty);
+                        } else {
+                            return null;
+                        }
+                    });
 
-            dialog.show();
+            setNameDialog.show();
 
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (((AddRecipeDialog) dialog).isPassed()) {
-                        int recipeId = mViewModel.addNewRecipe(new RecipeEntity(((AddRecipeDialog) dialog).getText()));
-                        Intent intent = new Intent(RecipesListFragment.this.getActivity(), RecipeInfoActivity.class);
-                        intent.putExtra(RecipeInfoActivity.KEY_RECIPE_ID, recipeId);
-                        startActivity(intent);
-                    }
+            setNameDialog.setOnDismissListener(dialog -> {
+                if (((SetNameDialog) dialog).isPassed()) {
+                    int recipeId = mViewModel.addNewRecipe(new RecipeEntity(((SetNameDialog) dialog).getText()));
+                    Intent intent = new Intent(RecipesListFragment.this.getActivity(), RecipeInfoActivity.class);
+                    intent.putExtra(RecipeInfoActivity.KEY_RECIPE_ID, recipeId);
+                    startActivity(intent);
                 }
             });
         }

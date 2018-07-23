@@ -2,6 +2,8 @@ package com.troya.menuplanner.model.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
@@ -26,14 +28,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class Repository {
+
+    private static final int CODE_INGREDIENTS_FINISH = 10;
+    private static final int CODE_UNITS_FINISH = 30;
 
     private static RecipeDao mRecipeDao;
     private static CategoryDao mCategoryDao;
@@ -84,29 +87,17 @@ public class Repository {
         }
     }
 
-    public SparseIntArray getOrCreateUnitIds (SparseArray<String> unitNames) {
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(1);
-        Future<SparseIntArray> result = null;
-        result = taskExecutor.submit(new GetOrCreateUnitIdsCallable(unitNames));
-        taskExecutor.shutdown();
-        try {
-            taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            return result.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
+    public SparseIntArray getOrCreateUnitIds(SparseArray<String> unitNames) {
+        SparseIntArray ids = new SparseIntArray();
+        for (int i = 0; i < unitNames.size(); i++) {
+            int id = mUnitDao.getIdByName(unitNames.valueAt(i));
+            if (id == 0) {
+                id = (int) mUnitDao.addItem(new UnitEntity(unitNames.valueAt(i)));
+            }
+            ids.put(unitNames.keyAt(i), id);
         }
 
-       /*
-
-
-        try {
-            Future<SparseIntArray> future = mExecutorService.submit(new GetOrCreateUnitIdsCallable(unitNames));
-            return future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        }*/
+        return ids;
     }
 
     public List<String> getAllUnitNames() {
@@ -145,30 +136,6 @@ public class Repository {
         @Override
         public Integer call() {
             return mUnitDao.getIdByName(mName);
-        }
-
-    }
-
-    protected static class GetOrCreateUnitIdsCallable implements Callable<SparseIntArray> {
-
-        private SparseArray<String> mNames;
-
-        GetOrCreateUnitIdsCallable(SparseArray<String> names) {
-            this.mNames = names;
-        }
-
-        @Override
-        public SparseIntArray call() {
-            SparseIntArray ids = new SparseIntArray();
-            for (int i = 0; i < mNames.size(); i++) {
-                int id = mUnitDao.getIdByName(mNames.valueAt(i));
-                if (id == 0) {
-                    mUnitDao.addItem(new UnitEntity(mNames.valueAt(i)));
-                }
-                ids.put(mNames.keyAt(i), id);
-            }
-
-            return ids;
         }
 
     }
@@ -273,26 +240,16 @@ public class Repository {
     }
 
     public SparseIntArray getOrCreateIngredientIds(SparseArray<String> ingredientNames) {
-
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(1);
-        Future<SparseIntArray> result = null;
-        result = taskExecutor.submit(new GetOrCreateIngredientIdsCallable(ingredientNames));
-        taskExecutor.shutdown();
-        try {
-            taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            return result.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
+        SparseIntArray ids = new SparseIntArray();
+        for (int i = 0; i < ingredientNames.size(); i++) {
+            int id = mIngredientDao.getIdByName(ingredientNames.valueAt(i));
+            if (id == 0) {
+                id = (int) mIngredientDao.addItem(new IngredientEntity(ingredientNames.valueAt(i)));
+            }
+            ids.put(ingredientNames.keyAt(i), id);
         }
 
-
-       /* try {
-            return mExecutorService.submit(new GetOrCreateIngredientIdsCallable(ingredientNames)).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        }*/
+        return ids;
     }
 
     protected static class IngredientNamesCallable implements Callable<List<String>> {
@@ -319,29 +276,6 @@ public class Repository {
 
     }
 
-    protected static class GetOrCreateIngredientIdsCallable implements Callable<SparseIntArray> {
-
-        private SparseArray<String> mNames;
-
-        GetOrCreateIngredientIdsCallable(SparseArray<String> names) {
-            this.mNames = names;
-        }
-
-        @Override
-        public SparseIntArray call() {
-            SparseIntArray ids = new SparseIntArray();
-            for (int i = 0; i < mNames.size(); i++) {
-                int id = mUnitDao.getIdByName(mNames.valueAt(i));
-                if (id == 0) {
-                    mIngredientDao.addItem(new IngredientEntity(mNames.valueAt(i)));
-                }
-                ids.put(mNames.keyAt(i), id);
-            }
-
-            return ids;
-        }
-    }
-
     protected static class AddIngredientCallable implements Callable<Long> {
 
         private IngredientEntity mIngredient;
@@ -360,21 +294,61 @@ public class Repository {
     //  ------------------------- Ingredients In Recipe -------------------------
     public void addIngredientsToRecipe(List<IngredientInRecipeEntity> ingredients,
                                        SparseArray<String> newIngredientsInfo, SparseArray<String> newUnitsInfo) {
-        if (newIngredientsInfo != null) {
-            SparseIntArray ingredientsIds = getOrCreateIngredientIds(newIngredientsInfo);
-            for (int i = 0; i < ingredientsIds.size(); i++) {
-                ingredients.get(ingredientsIds.keyAt(i)).setIngredientId(ingredientsIds.valueAt(i));
+
+        final boolean[] unitsFinished = {true};
+        final boolean[] ingredientsFinished = {true};
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case CODE_UNITS_FINISH:
+                        SparseIntArray unitsIds = (SparseIntArray) msg.obj;
+                        for (int i = 0; i < unitsIds.size(); i++) {
+                            ingredients.get(unitsIds.keyAt(i)).setUnitId(unitsIds.valueAt(i));
+                        }
+                        unitsFinished[0] = true;
+                        break;
+                    case CODE_INGREDIENTS_FINISH:
+                        SparseIntArray ingredientsIds = (SparseIntArray) msg.obj;
+                        for (int i = 0; i < ingredientsIds.size(); i++) {
+                            ingredients.get(ingredientsIds.keyAt(i)).setIngredientId(ingredientsIds.valueAt(i));
+                        }
+                        ingredientsFinished[0] = true;
+                        break;
+                }
+
+                if (unitsFinished[0] && ingredientsFinished[0]) {
+                    mExecutorService.execute(() -> mIngredientInRecipeDao.addItems(ingredients));
+                }
+            }
+        };
+
+        if (newIngredientsInfo == null && newUnitsInfo == null) {
+            mExecutorService.execute(() -> mIngredientInRecipeDao.addItems(ingredients));
+        } else {
+            if (newIngredientsInfo != null) {
+                ingredientsFinished[0] = false;
+                Thread ingredientsThread = new Thread(() -> {
+                    SparseIntArray ingredientsIds = getOrCreateIngredientIds(newIngredientsInfo);
+                    Message message = handler.obtainMessage(CODE_INGREDIENTS_FINISH, ingredientsIds);
+                    handler.sendMessage(message);
+                });
+                ingredientsThread.setName("IngredientsInfoThread");
+                ingredientsThread.start();
+            }
+
+            if (newUnitsInfo != null) {
+                unitsFinished[0] = false;
+                Thread unitsThread = new Thread(() -> {
+                    SparseIntArray unitsIds = getOrCreateUnitIds(newUnitsInfo);
+                    Message message = handler.obtainMessage(CODE_UNITS_FINISH, unitsIds);
+                    handler.sendMessage(message);
+                });
+                unitsThread.setName("UnitsInfoThread");
+                unitsThread.start();
             }
         }
-
-        if (newUnitsInfo != null) {
-            SparseIntArray unitsIds = getOrCreateUnitIds(newUnitsInfo);
-            for (int i = 0; i < unitsIds.size(); i++) {
-                ingredients.get(unitsIds.keyAt(i)).setUnitId(unitsIds.valueAt(i));
-            }
-        }
-
-        mExecutorService.execute(() -> mIngredientInRecipeDao.addItems(ingredients));
     }
 
     public void deleteIngredientsFromRecipe(List<Integer> ingredientsIds) {

@@ -3,6 +3,7 @@
 
     <!--  Hints  -->
     <string name="new_recipe_name">New Recipe Name</string>
+    <string name="new_source_name">New Source Name</string>
 
     <!--  Buttons  -->
     <string name="ok">OK</string>
@@ -63,5 +64,6 @@
     <string name="save_changes">Save Changes</string>
     <string name="type_instructions_here">Type instructions here</string>
     <string name="start_cooking">Start Cooking</string>
+    <string name="chenges_saved">Chenges saved!</string>
 
 </resources>

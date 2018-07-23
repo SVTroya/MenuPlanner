@@ -10,7 +10,7 @@
     android:paddingBottom="4dp"
     tools:ignore="RtlSymmetry">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imgIngredientPic"
         android:layout_width="36dp"
         android:layout_height="36dp"
@@ -64,7 +64,7 @@
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@+id/editAmount" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ibtnComment"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -76,10 +76,9 @@
         app:layout_constraintEnd_toStartOf="@+id/ibtnMoreOptions"
         app:layout_constraintStart_toEndOf="@+id/editUnit"
         app:srcCompat="@drawable/ic_comment_outline_inactive"
-        tools:ignore="ContentDescription"
-        tools:layout_editor_absoluteY="4dp" />
+        tools:ignore="ContentDescription"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ibtnMoreOptions"
         android:layout_width="36dp"
         android:layout_height="36dp"

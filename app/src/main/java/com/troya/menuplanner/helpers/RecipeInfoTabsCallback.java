@@ -12,9 +12,7 @@ public interface RecipeInfoTabsCallback {
 
     void setResultUnit(String unitName);
 
-    String getResultUnitName();
-
-    void onAddIngredientClick();
+    void onAddIngredientClick(IngredientInRecipeInfo ingredient);
 
     void onIngredientDelete(int id);
 }

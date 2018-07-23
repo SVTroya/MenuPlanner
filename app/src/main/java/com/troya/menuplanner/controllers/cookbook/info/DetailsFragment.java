@@ -1,19 +1,26 @@
 package com.troya.menuplanner.controllers.cookbook.info;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.troya.menuplanner.App;
 import com.troya.menuplanner.R;
 import com.troya.menuplanner.Temp.Main.Fragments.BaseTabFragment;
 import com.troya.menuplanner.helpers.FloatStringHelper;
 import com.troya.menuplanner.helpers.RecipeInfoTabsCallback;
 import com.troya.menuplanner.model.db.entity.RecipeEntity;
+import com.troya.menuplanner.viewmodel.DetailsViewModel;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +32,10 @@ public class DetailsFragment extends BaseTabFragment {
 
     private RecipeEntity mRecipe;
     private RecipeInfoTabsCallback mCallback;
+    private DetailsViewModel mViewModel;
+
+    @Inject
+    ViewModelProvider.Factory mViewModelFactory;
 
     public static DetailsFragment newInstance(Context context, RecipeEntity recipe) {
         DetailsFragment fragment = new DetailsFragment();
@@ -38,11 +49,26 @@ public class DetailsFragment extends BaseTabFragment {
     }
 
     private Unbinder mUnbinder;
+    private boolean isInitializationFinished = false;
 
     @BindView(R.id.editResult)
     EditText mResultAmountView;
     @BindView(R.id.editUnit)
     AutoCompleteTextView mUnitView;
+    @BindView(R.id.editRecipeText)
+    EditText mInstructionsView;
+
+    private void setup() {
+        if (mRecipe != null) {
+            mResultAmountView.setText(FloatStringHelper.getCorrectedValue(mRecipe.getResultAmount()));
+            if (mRecipe.getResultUnitId() != null) {
+                mUnitView.setText(mViewModel.getUnitNameById(mRecipe.getResultUnitId()));
+            }
+            mInstructionsView.setText(mRecipe.getComment());
+        }
+
+        isInitializationFinished = true;
+    }
 
     /*------------------------------- Lifecycle -------------------------------*/
 
@@ -77,10 +103,19 @@ public class DetailsFragment extends BaseTabFragment {
         return mView;
     }
 
-    private void setup() {
-        if (mRecipe != null) {
-            mResultAmountView.setText(FloatStringHelper.getCorrectedValue(mRecipe.getResultAmount()));
-            //mUnitView.setText(mRecipe.);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (this.getActivity() != null) {
+            ((App) this.getActivity().getApplication())
+                    .getAppComponent()
+                    .inject(this);
+
+            mViewModel = ViewModelProviders.of(this, mViewModelFactory)
+                    .get(DetailsViewModel.class);
+
+            setup();
         }
     }
 
@@ -94,6 +129,23 @@ public class DetailsFragment extends BaseTabFragment {
 
     @OnTextChanged(R.id.editUnit)
     void onUnitChanged() {
-        mCallback.setResultUnit(mUnitView.getText().toString());
+        if (isInitializationFinished) {
+            mCallback.setResultUnit(mUnitView.getText().toString());
+        }
+    }
+
+    @OnTextChanged(R.id.editResult)
+    void onResultAmountChanged() {
+        if (isInitializationFinished && !TextUtils.isEmpty(mResultAmountView.getText().toString())) {
+            float value = Float.parseFloat(mResultAmountView.getText().toString());
+            mCallback.setResultAmount(value);
+        }
+    }
+
+    @OnTextChanged(R.id.editRecipeText)
+    void onInstructionChanged() {
+        if (isInitializationFinished) {
+            mCallback.setInstructions(mInstructionsView.getText().toString());
+        }
     }
 }

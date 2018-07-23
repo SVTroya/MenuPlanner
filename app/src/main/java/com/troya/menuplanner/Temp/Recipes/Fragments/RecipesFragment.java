@@ -85,10 +85,10 @@ public class RecipesFragment extends BaseTabFragment {
                 itemDialog.getBtnClose().setOnClickListener(listener);*//*
                 break;
             case R.id.btnAddBook:
-               *//* AddRecipeDialog groupDialog = new AddRecipeDialog(this.getContext(), new CookbookRepo(
+               *//* SetNameDialog groupDialog = new SetNameDialog(this.getContext(), new CookbookRepo(
                         getContext(),
                         null),
-                        new AddRecipeDialog.OnPositiveListener() {
+                        new SetNameDialog.OnPositiveListener() {
                             @Override
                             public void OnPositive() {
 

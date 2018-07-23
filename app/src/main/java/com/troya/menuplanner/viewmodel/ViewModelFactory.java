@@ -28,6 +28,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             viewModel = new RecipeInfoViewModel(mRepository);
         } else if (modelClass.isAssignableFrom(IngredientsViewModel.class)) {
             viewModel = new IngredientsViewModel(mRepository);
+        } else if (modelClass.isAssignableFrom(DetailsViewModel.class)) {
+            viewModel = new DetailsViewModel(mRepository);
         } else {
             throw new IllegalArgumentException("ViewModel Not Found");
         }

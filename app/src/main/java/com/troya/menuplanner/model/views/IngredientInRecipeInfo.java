@@ -22,6 +22,8 @@ public class IngredientInRecipeInfo {
     private String unitName;
     private String comment;
 
+    private Integer position;
+
     public Integer getId() {
         return id;
     }
@@ -84,6 +86,14 @@ public class IngredientInRecipeInfo {
 
     public void setUnitId(Integer unitId) {
         this.unitId = unitId;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     @Override

@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.transition.TransitionManager;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -45,6 +45,11 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
     public void addData(IngredientInRecipeInfo ingredient) {
         this.mData.add(ingredient);
         notifyItemInserted(this.mData.size() - 1);
+    }
+
+    public void changeData(IngredientInRecipeInfo ingredient) {
+        this.mData.set(ingredient.getPosition(), ingredient);
+        notifyItemChanged(ingredient.getPosition());
     }
 
     @Override
@@ -83,12 +88,17 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
             popup.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.menu_edit:
+                        mData.get(position).setPosition(position);
+                        mCallback.onEdit(mData.get(position));
                         break;
 
                     case R.id.menu_delete:
                         mCallback.onDelete(mData.get(position).getId());
                         mData.remove(position);
-                        notifyItemRemoved(position);
+
+                        //TODO: problem
+                        notifyDataSetChanged();
+                        //notifyItemRemoved(position);
                         break;
                 }
                 return false;
@@ -103,7 +113,7 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.imgIngredientPic)
-        ImageView mIngrImage;
+        AppCompatImageView mIngrImage;
         @BindView(R.id.editIngredientName)
         TextView mIngrNameView;
         @BindView(R.id.editAmount)
@@ -113,9 +123,9 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
         @BindView(R.id.editComment)
         TextView mCommentView;
         @BindView(R.id.ibtnComment)
-        ImageView mCommentIndicator;
+        AppCompatImageView mCommentIndicator;
         @BindView(R.id.ibtnMoreOptions)
-        ImageView mMoreOptionsButton;
+        AppCompatImageView mMoreOptionsButton;
 
         boolean shouldExpand = false;
 
@@ -160,5 +170,7 @@ public class IngredientsInRecipeListAdapter extends RecyclerView.Adapter<Ingredi
 
     public interface IngredientsListCallback {
         void onDelete (int id);
+
+        void onEdit (IngredientInRecipeInfo ingredient);
     }
 }

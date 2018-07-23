@@ -19,6 +19,7 @@ import com.troya.menuplanner.viewmodel.IngredientsViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class IngredientInRecipeDialog extends Dialog {
     private static final int LAYOUT = R.layout.dialog_add_ingredient;
@@ -29,6 +30,8 @@ public class IngredientInRecipeDialog extends Dialog {
 
     private DialogCallback mCallback;
     private IngredientsViewModel mViewModel;
+    private IngredientInRecipeInfo mIngredient;
+
 
     public IngredientInRecipeDialog(@NonNull Context context, IngredientInRecipeInfo ingredient,
                                     DialogCallback callback, IngredientsViewModel viewModel) {
@@ -54,20 +57,19 @@ public class IngredientInRecipeDialog extends Dialog {
     @BindView(R.id.editComment)
     EditText mCommentView;
 
-    private IngredientInRecipeInfo mIngredient;
 
     public interface DialogCallback {
         void onVerifiedDismiss(IngredientInRecipeInfo ingredient);
-
-        String[] getAllIngredients();
-
-        String[] getAllUnits();
     }
 
-    @OnClick(R.id.btn_ok)
+    @OnClick(R.id.btn_cancel)
     void onOkClick() {
         if (verifyData()) {
-            mIngredient.setIngredientName(mIngredientNameView.getText().toString());
+            if (!mIngredientNameView.getText().toString().equals(mIngredient.getIngredientName())) {
+                mIngredient.setIngredientName(mIngredientNameView.getText().toString());
+                mIngredient.setIngredientId(null);
+            }
+
             mIngredient.setUnitName(mUnitView.getText().toString());
             mIngredient.setComment(mCommentView.getText().toString());
             if (!TextUtils.isEmpty(mAmountView.getText().toString())) {
@@ -79,9 +81,24 @@ public class IngredientInRecipeDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.btn_cancel)
+    @OnClick(R.id.btn_ok)
     void onCancelClick() {
         dismiss();
+    }
+
+    @OnTextChanged(R.id.editIngredientName)
+    void onIngredientInput() {
+        mIngredientNameTil.setError(null);
+    }
+
+    @OnTextChanged(R.id.editAmount)
+    void onAmountInput() {
+        mAmountTil.setError(null);
+    }
+
+    @OnTextChanged(R.id.editUnit)
+    void onUnitInput() {
+        mAmountTil.setError(null);
     }
 
     private boolean verifyData() {
@@ -90,8 +107,8 @@ public class IngredientInRecipeDialog extends Dialog {
         mIngredientNameTil.setError(null);
         mUnitTil.setError(null);
 
-        if (!mUnitView.getText().toString().isEmpty() && mAmountView.getText().toString().isEmpty()) {
-            mIngredientNameTil.setError(this.getContext().getString(ERROR_MESSAGE_2));
+        if (!TextUtils.isEmpty(mUnitView.getText().toString()) && TextUtils.isEmpty(mAmountView.getText().toString())) {
+            mAmountTil.setError(this.getContext().getString(ERROR_MESSAGE_2));
             result = false;
         }
         if (TextUtils.isEmpty(mIngredientNameView.getText().toString())) {
@@ -108,6 +125,9 @@ public class IngredientInRecipeDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getWindow() != null) {
+            getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
         setContentView(LAYOUT);
 
         ButterKnife.bind(this);

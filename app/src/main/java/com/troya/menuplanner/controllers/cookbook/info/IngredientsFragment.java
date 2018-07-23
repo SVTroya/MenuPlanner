@@ -143,23 +143,17 @@ public class IngredientsFragment extends BaseTabFragment
     /*------------------------------- Callbacks -------------------------------*/
     @Override
     public void onVerifiedDismiss(IngredientInRecipeInfo ingredient) {
-        mAdapter.addData(ingredient);
+        if (ingredient.getPosition() != null){
+            mAdapter.changeData(ingredient);
+        } else {
+            mAdapter.addData(ingredient);
+        }
         mCallback.addIngredientInfo(ingredient);
     }
 
-    @Override
-    public String[] getAllIngredients() {
-        return new String[0];
-    }
-
-    @Override
-    public String[] getAllUnits() {
-        return new String[0];
-    }
-
-    public void onAddIngredientClick() {
+    public void onAddIngredientClick(IngredientInRecipeInfo ingredient) {
         if (this.getContext() != null) {
-            new IngredientInRecipeDialog(this.getContext(), null, this, mViewModel).show();
+            new IngredientInRecipeDialog(this.getContext(), ingredient, this, mViewModel).show();
         }
     }
 
@@ -167,4 +161,11 @@ public class IngredientsFragment extends BaseTabFragment
     public void onDelete(int id) {
         mCallback.onIngredientDelete(id);
     }
+
+    @Override
+    public void onEdit(IngredientInRecipeInfo ingredient) {
+        onAddIngredientClick(ingredient);
+    }
+
+
 }

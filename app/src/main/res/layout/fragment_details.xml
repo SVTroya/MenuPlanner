@@ -65,21 +65,21 @@
             android:id="@+id/editRecipeText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="145dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/shape_edit_text"
             android:gravity="top"
+            android:hint="@string/type_instructions_here"
             android:inputType="textMultiLine"
+            android:minHeight="145dp"
             android:padding="6dp"
             android:scrollbars="vertical"
             android:textColor="@color/colorSecondary"
+            android:textColorHint="@color/textColorHint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editResult"
-            android:hint="@string/type_instructions_here"
-            android:textColorHint="@color/textColorHint"/>
+            app:layout_constraintTop_toBottomOf="@+id/editResult" />
 
     </android.support.constraint.ConstraintLayout>
 

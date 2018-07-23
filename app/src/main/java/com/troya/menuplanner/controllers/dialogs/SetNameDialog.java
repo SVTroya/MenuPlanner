@@ -4,10 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Window;
 import android.widget.EditText;
 
@@ -16,16 +15,23 @@ import com.troya.menuplanner.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
-public class AddRecipeDialog extends Dialog {
+public class SetNameDialog extends Dialog {
+
+    private static final int LAYOUT = R.layout.dialog_add_item;
 
     private OnPositiveListener mOnPositiveListener;
+    private String mName;
+    @StringRes
+    private int mHint;
 
-    public AddRecipeDialog(@NonNull Context context, OnPositiveListener onPositiveListener) {
+    public SetNameDialog(@NonNull Context context, String name, @StringRes int hint, OnPositiveListener onPositiveListener) {
         super(context);
         mOnPositiveListener = onPositiveListener;
+        mName = name;
+        mHint = hint;
     }
-    private static final int LAYOUT = R.layout.dialog_add_item;
 
     private boolean mIsPassed = false;
 
@@ -45,7 +51,7 @@ public class AddRecipeDialog extends Dialog {
 
     public String getText() {
      return mNameView.getText().toString();
-    };
+    }
 
     /*------------------------------- Lifecycle -------------------------------*/
 
@@ -59,24 +65,22 @@ public class AddRecipeDialog extends Dialog {
 
         ButterKnife.bind(this);
 
-        mNameView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        mNameView.setHint(mHint);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mNameLayout.setError(null);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
+        if (!TextUtils.isEmpty(mName)) {
+            mNameView.setText(mName);
+        }
     }
 
 
     /*------------------------------- Callbacks -------------------------------*/
 
-    @OnClick(R.id.btn_cancel)
+    @OnTextChanged(R.id.editName)
+    void onNameTextChanged() {
+        mNameLayout.setError(null);
+    }
+
+    @OnClick(R.id.btn_ok)
     void onOkClick() {
         mNameLayout.setError(null);
 
@@ -90,7 +94,7 @@ public class AddRecipeDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.btn_ok)
+    @OnClick(R.id.btn_cancel)
     void onCancelClick() {
         cancel();
     }

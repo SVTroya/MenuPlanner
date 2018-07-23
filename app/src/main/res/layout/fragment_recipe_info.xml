@@ -19,7 +19,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/imgRecipePhoto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -42,29 +42,22 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <EditText
-                    android:id="@+id/editRecipeName"
+                <TextView
+                    android:id="@+id/txtRecipeName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:inputType="none"
                     android:maxLines="2"
                     android:paddingEnd="8dp"
                     android:textColor="@color/textColorLight"
                     android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/editSource"
+                <TextView
+                    android:id="@+id/txtSource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="@string/recipe_source"
-                    android:inputType="none"
                     android:textAllCaps="true"
                     android:textColor="@color/textColor"
                     android:textStyle="bold" />
@@ -83,12 +76,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/ibtnCancel"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginEnd="24dp"
                     android:tint="@color/colorAdditional"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/btnStart"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -109,13 +103,13 @@
                     android:textSize="18sp"
                     android:textStyle="bold|italic"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnConfirm"
+                    app:layout_constraintEnd_toStartOf="@+id/ibtnSave"
                     app:layout_constraintHorizontal_weight="10"
                     app:layout_constraintStart_toEndOf="@+id/ibtnCancel"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/ibtnConfirm"
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/ibtnSave"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="24dp"
@@ -128,7 +122,7 @@
                     app:srcCompat="@drawable/ic_floppy_disk"
                     tools:ignore="ContentDescription" />
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/ibtnMore"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
@@ -136,7 +130,7 @@
                     android:tint="@color/colorAdditional"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnConfirm"
+                    app:layout_constraintStart_toEndOf="@+id/ibtnSave"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_more_vertical"
                     tools:ignore="ContentDescription" />

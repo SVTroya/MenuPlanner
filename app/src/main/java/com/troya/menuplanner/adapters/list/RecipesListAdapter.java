@@ -2,19 +2,19 @@ package com.troya.menuplanner.adapters.list;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.troya.menuplanner.R;
 import com.troya.menuplanner.adapters.list.RecipesListAdapter.RecipeViewHolder;
 import com.troya.menuplanner.helpers.ImageHelper;
-import com.troya.menuplanner.model.views.RecipeInfo;
 import com.troya.menuplanner.model.db.entity.CategoryEntity;
+import com.troya.menuplanner.model.views.RecipeInfo;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     class RecipeViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.imgRecipePhoto)
-        ImageView mRecipePhotoImage;
+        AppCompatImageView mRecipePhotoImage;
         @BindView(R.id.txtRecipeName)
         TextView mRecipeNameText;
         @BindView(R.id.txtRecipeSource)
@@ -77,7 +77,7 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         @BindView(R.id.ratingBar)
         RatingBar mRatingBar;
         @BindView(R.id.imgOptions)
-        ImageView mOptionsButton;
+        AppCompatImageView mOptionsButton;
 
         /*@BindView(R.id.tagView)
         TagView mTagGroup;*/

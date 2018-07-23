@@ -24,8 +24,7 @@
         <activity android:name=".controllers.cookbook.RecipesListActivity">
         </activity>
         <activity
-            android:name=".controllers.cookbook.info.RecipeInfoActivity"
-            android:screenOrientation="portrait" />
+            android:name=".controllers.cookbook.info.RecipeInfoActivity" />
     </application>
 
 </manifest>
